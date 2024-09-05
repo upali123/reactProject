@@ -1,0 +1,19 @@
+.Head {
+    background-color: white;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+}
+
+.ptag {
+    font-family: Satoshi;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 32px;
+    text-align: center;
+
+}
