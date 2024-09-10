@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import logo from "../assets/logo.png"
 import NavBar from "./Navbar"
-import postData from "../apiWrapper/apiwrapper"
+import postData, { mutationAPI } from "../apiWrapper/apiwrapper"
 import config from "../apiWrapper/config"
 
 export default function SignIn() {
