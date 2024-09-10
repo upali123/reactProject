@@ -4,10 +4,13 @@ import logo1 from "../assets/outlookImg.svg"
 import logo2 from "../assets/facebookImg.svg"
 import logo3 from "../assets/linkedinImg.svg"
 import Market from "../assets/logo.png"
-import postData from "../apiWrapper/apiwrapper"
+import postData, { mutationAPI } from "../apiWrapper/apiwrapper"
+import config from "../apiWrapper/config"
 
 export default function Login() {
+
   const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
 
   const [passwordType, setPasswordType] = useState("password");
 
@@ -68,20 +71,20 @@ export default function Login() {
     //   setFullScreenLoading(false);
     }
   };
-  const handleLogin=(e)=>{
+  const handleLogin=async(e)=>{
     e?.preventDefault()
     const payload = {
-     email:"upali.khanduri@resourcifi.com",password:"Admin@123"
+     email:email,password:password
     };
     
-    // Usage example
-    postData('http://localhost:3000/v1/auth/login', payload,"POST")
-      .then(data => {
-        console.log('Success:', data); // Handle the response data here
-      })
-      .catch(error => {
-        console.error('Error:', error); // Handle any errors here
-      });
+    try {
+     
+      const response = await mutationAPI("/v1/auth/login", "POST", payload);
+
+      // window.location.href = "/";
+    } catch (error) {
+      console.error('Login Error:', error.response ? error.response.data : error.message);
+    }
     
   }
   const handlePasswordChange = (e) => {
@@ -120,6 +123,7 @@ export default function Login() {
                 </label>
                 <div className="mt-2">
                   <input
+                  onChange={(e)=>{setEmail(e?.target?.value)}}
                     id="email"
                     name="email"
                     type="email"
@@ -144,11 +148,7 @@ export default function Login() {
                 <div className="mt-2">
                   <input
                      type={passwordType}
-                    //  RightIcon={
-                    //    passwordType === "password"
-                    //      ? <VisibilityOff/>
-                    //      : <Visibility/>
-                    //  }
+                   
                      rightOnClick={() => togglePassword()}
                      value={password}
                      onChange={(e) => {
@@ -173,12 +173,12 @@ export default function Login() {
                 </button>
               </div>
 <div style={{display:"flex",justifyContent:"space-around"}}>
-  {ImageConstant.map((img,i)=>{
+{/* {ImageConstant.map((img,i)=>{
     return(
       <img src={img?.image} onClick={handleSocialclick(img?.id)}/>
 
     )
-  })}
+  })} */}
                 <img src={logo} onClick={(googleResponse) => onGoogleSuccess(googleResponse)}/>
  
               </div>

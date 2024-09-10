@@ -1,24 +1,28 @@
-import React from "react"
+import React, { useState } from "react"
 import logo from "../assets/logo.png"
 import NavBar from "./Navbar"
 import postData from "../apiWrapper/apiwrapper"
+import config from "../apiWrapper/config"
 
 export default function SignIn() {
 
-  const handleRegister=(e)=>{
+  const [email,setEmail]=useState("")
+  const [password,setPassword]=useState("")
+
+  const handleRegister=async(e)=>{
     e?.preventDefault()
     const payload={
-      "email":"upali.khanduri@reachiq.io",
-      "password":"Admin@123",
+      "email":email,
+      "password":password,
       }
      
-    postData('http://localhost:3000/v1/auth/signup', payload,"POST")
-      .then(data => {
-        console.log('Success:', data); // Handle the response data here
-      })
-      .catch(error => {
-        console.error('Error:', error); // Handle any errors here
-      });
+      try {
+        const response = await mutationAPI("/v1/auth/signup", "POST", payload);
+
+        window.location.href = "/login";
+      } catch (error) {
+        console.error('Login Error:', error.response ? error.response.data : error.message);
+      }
     
   }
     return (
@@ -75,6 +79,7 @@ export default function SignIn() {
                 </label>
                 <div className="mt-2">
                   <input
+                  onChange={(e)=>setEmail(e?.target?.value)}
                     id="email"
                     name="email"
                     type="email"
@@ -94,6 +99,8 @@ export default function SignIn() {
                 </div>
                 <div className="mt-2">
                   <input
+                                    onChange={(e)=>setPassword(e?.target?.value)}
+
                     id="password"
                     name="password"
                     type="password"

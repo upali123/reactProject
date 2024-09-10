@@ -1,19 +1,37 @@
-export default async function postData(url, data,method) {
+import instance from "./config";
+export async function mutationAPI(url, method, data, headers, configs) {
+    const config = {
+        url,
+        method,
+        data,
+        ...configs,
+    };
+    if (headers) config.headers = headers;
     try {
-        console.log({data},"check");
-      const response = await fetch(url, {
-        method: method,
-      
-        body: JSON.stringify(data) // Convert the JavaScript object to a JSON string
-      });
-  
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-  
-      const result = await response.json(); // Parse the JSON response
-      return result; // Return the parsed data
+        return await instance(config);
     } catch (error) {
-      console.error('There was a problem with the fetch operation:', error);
+        const err = error
+        return {
+            status: err.response === undefined ? false : err.response.status,
+            err,
+        }
     }
-  }
+}
+
+
+export async function getQueryAPI(url, method, params) {
+        const config = {
+            url,
+            method,
+            params
+        };
+        try {
+            return await instance(config);
+        } catch (error) {
+            const err = error
+            return {
+                status: err.response === undefined ? false : err.response.status,
+                err,
+            };
+        }
+}
